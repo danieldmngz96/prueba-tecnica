@@ -65,10 +65,7 @@ code {
   }
 }
 
-.content-body .container-fluid {
-  margin-top: 0.2rem;
-  margin-right: 0.3rem;
-}
+
 
 .dlabnav {
   width: 20.5rem;
@@ -269,7 +266,7 @@ code {
 
 .content-body .container-fluid {
   width: 90% !important;
-  background-color: #ededed;
+  background-color: var(--yellow);
 }
 
 .content-body .container-fluid {
