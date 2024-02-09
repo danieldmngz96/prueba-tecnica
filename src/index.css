@@ -1,10 +1,32 @@
 :root {
-  --primary: #47ae3b;
-  --secondary: #145650;
-  --rgba-primary-1: #cef1ca;
-  --font-family-base: Roboto, sans-serif;
-  --font-family-title: Roboto, sans-serif;
-  --sidebar-bg: #FFFFFF;
+  --blue: #007bff;
+  --indigo: #6610f2;
+  --purple: #6f42c1;
+  --pink: #e83e8c;
+  --red: #dc3545;
+  --orange: #fd7e14;
+  --yellow: #ffc107;
+  --green: #28a745;
+  --teal: #20c997;
+  --cyan: #17a2b8;
+  --white: #fff;
+  --gray: #6c757d;
+  --gray-dark: #343a40;
+  --primary: #007bff;
+  --secondary: #6c757d;
+  --success: #28a745;
+  --info: #17a2b8;
+  --warning: #ffc107;
+  --danger: #dc3545;
+  --light: #f8f9fa;
+  --dark: #343a40;
+  --breakpoint-xs: 0;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 
@@ -22,15 +44,15 @@ code {
     monospace;
 }
 
-.mt-4rem{
+.mt-4rem {
   margin-top: 4rem;
 }
 
-.txt-input{
+.txt-input {
   border: none;
 }
 
-.txt-input:focus{
+.txt-input:focus {
   border: none;
   outline: none;
   box-shadow: none;
@@ -38,8 +60,8 @@ code {
 
 @media (max-width: 768px) {
   .mycontainer .col-md-4 {
-     flex: 0 0 auto;
-     width: 90.33333333%;
+    flex: 0 0 auto;
+    width: 90.33333333%;
   }
 }
 
@@ -87,7 +109,7 @@ code {
 .dlabnav ul {
   padding: 0;
   margin: 0;
-  list-style: none; 
+  list-style: none;
 }
 
 .dlabnav .metismenu {
@@ -103,12 +125,12 @@ code {
   left: 0;
 }
 
-.dlabnav .metismenu > li {
+.dlabnav .metismenu>li {
   display: flex;
   flex-direction: column;
 }
 
-.dlabnav .metismenu > li a > i {
+.dlabnav .metismenu>li a>i {
   font-size: 1.3rem;
   display: inline-block;
   vertical-align: middle;
@@ -154,9 +176,11 @@ code {
   transition: all 0.5s;
 }
 
-.dlabnav .metismenu ul a:hover, .dlabnav .metismenu ul a:focus, .dlabnav .metismenu ul a .active {
+.dlabnav .metismenu ul a:hover,
+.dlabnav .metismenu ul a:focus,
+.dlabnav .metismenu ul a .active {
   text-decoration: none;
-  color: var(--primary); 
+  color: var(--primary);
 }
 
 .dlabnav .metismenu ul a:before {
@@ -167,7 +191,7 @@ code {
   top: 50%;
   left: 1.75rem;
   border-radius: 3.75rem;
-  transform: translateY(-50%); 
+  transform: translateY(-50%);
 }
 
 .dlabnav .metismenu .has-arrow:after {
@@ -200,12 +224,12 @@ code {
 }
 
 .dlabnav .metismenu li .active {
-  color: var(--primary); 
+  color: var(--primary);
   background-color: var(--rgba-primary-1);
 }
 
-.dlabnav .metismenu > li > .active:before {
-  position:absolute;
+.dlabnav .metismenu>li>.active:before {
+  position: absolute;
   background: var(--primary);
   content: "";
   height: 100%;
@@ -223,9 +247,10 @@ code {
     width: 15rem;
     top: 4.5rem;
     height: 100%;
-  } 
-  .dlabnav .metismenu > li > .active:before {
-     width: 0.600rem;
+  }
+
+  .dlabnav .metismenu>li>.active:before {
+    width: 0.600rem;
   }
 }
 
@@ -239,12 +264,12 @@ code {
 @media only screen and (max-width: 47.9375rem) {
   .dlabnav {
     width: 18rem;
-  } 
+  }
 }
 
 .content-body .container-fluid {
- width: 90% !important;
- background-color: #ededed;
+  width: 90% !important;
+  background-color: #ededed;
 }
 
 .content-body .container-fluid {
@@ -254,7 +279,13 @@ code {
 }
 
 @media only screen and (max-width: 75rem) {
-  .content-body .container-fluid, .content-body .container-sm, .content-body .container-md, .content-body .container-lg, .content-body .container-xl, .content-body .container-xxl {
+
+  .content-body .container-fluid,
+  .content-body .container-sm,
+  .content-body .container-md,
+  .content-body .container-lg,
+  .content-body .container-xl,
+  .content-body .container-xxl {
     padding-top: 1.875rem;
     padding-right: 1.875rem;
     padding-left: 1.875rem;
@@ -262,19 +293,29 @@ code {
 }
 
 @media only screen and (max-width: 47.9375rem) {
-  .content-body .container-fluid, .content-body .container-sm, .content-body .container-md, .content-body .container-lg, .content-body .container-xl, .content-body .container-xxl {
+
+  .content-body .container-fluid,
+  .content-body .container-sm,
+  .content-body .container-md,
+  .content-body .container-lg,
+  .content-body .container-xl,
+  .content-body .container-xxl {
     padding-top: 1.25rem;
     padding-right: 1.25rem;
-    padding-left: 1.25rem; 
+    padding-left: 1.25rem;
   }
 }
 
 @media only screen and (max-width: 35.9375rem) {
-  .content-body .container-fluid, .content-body .container-sm, .content-body .container-md, .content-body .container-lg, .content-body .container-xl, .content-body .container-xxl {
+
+  .content-body .container-fluid,
+  .content-body .container-sm,
+  .content-body .container-md,
+  .content-body .container-lg,
+  .content-body .container-xl,
+  .content-body .container-xxl {
     padding-top: 0.9375rem;
     padding-right: 0.9375rem;
     padding-left: 0.9375rem;
   }
 }
-
-

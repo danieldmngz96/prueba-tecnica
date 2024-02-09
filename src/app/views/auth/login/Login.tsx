@@ -8,36 +8,54 @@ import { AuthContext } from "../../store/contexts/AuthContext";
 import { AuthService } from "../../../services/auth/AuthService";
 
 
-export function Login(){
-   const { dispatchUser }:any = useContext(AuthContext);
-   const [ auth, setAuth ] = useState({email:'', password:''})
-   const history = useHistory();
+export function Login() {
+  const { dispatchUser }: any = useContext(AuthContext);
+  const [auth, setAuth] = useState({ username: '', password: '' })
+  const history = useHistory();
 
-   const handleSubmit = async (e:React.ChangeEvent<HTMLFormElement>) => {
-      try {
-          e.preventDefault();
-          const resp = await AuthService.login(auth);
-          console.log(resp)
-          if(resp.success){
-            sessionStorage.setItem('user', JSON.stringify({...resp.data, loggedIn:true}));  
-            dispatchUser({type:'login', payload:resp.data }); 
-            history.replace('/dashboard/home');
-          }
-      } catch (error) {
-        
-      } 
-   }
+/*   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    try {
+      e.preventDefault();
+      const resp = await AuthService.login(auth);
+      console.log(resp)
+      if (resp.success) {
+        sessionStorage.setItem('user', JSON.stringify({ ...resp.data, loggedIn: true }));
+        dispatchUser({ type: 'login', payload: resp.data });
+        history.push('/dashboard/home'); 
+      }
+    } catch (error) {
 
-   const handleChange = (e:React.ChangeEvent<HTMLFormElement | HTMLInputElement>) => {
-       setAuth({
-         ...auth,
-         [e.target.name]:e.target.value
-       })
-   }
+    }
+  } */
 
-   return(
-     <AuthCard>
-        <form onSubmit={handleSubmit} autoComplete="off">
+  const handleSubmit = async (e:any) => {
+    e.preventDefault();
+    try {
+      const resp = await AuthService.login(auth);
+      if (resp) {
+        console.log(resp);
+        // Guardar datos de usuario en sesión
+        sessionStorage.setItem('user', JSON.stringify({ ...resp, loggedIn: true }));
+        // Redireccionar a dashboard
+        history.push('/dashboard/home');
+      } else {
+        alert('Credenciales inválidas');
+      }
+    } catch (error) {
+      console.error('Error en inicio de sesión:', error);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLFormElement | HTMLInputElement>) => {
+    setAuth({
+      ...auth,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  return (
+    <AuthCard>
+      <form onSubmit={handleSubmit} autoComplete="off">
         <div className="text-center mb-2">
           <img
             className="img-fluid"
@@ -47,8 +65,8 @@ export function Login(){
         </div>
 
         <div className="mb-2 p-1 d-flex border rounded">
-          <div className="mx-2 mt-1"> 
-            <img 
+          <div className="mx-2 mt-1">
+            <img
               className="img-fluid"
               src={accountIcon}
               alt="iconUser" />
@@ -56,16 +74,16 @@ export function Login(){
           <input
             autoFocus
             className="form-control border-0 txt-input"
-            name="email"
-            type="email"
-            placeholder="Email"
-            onChange={ e => handleChange(e) }
+            name="username"
+            type="text"
+            placeholder="Username"
+            onChange={e => handleChange(e)}
           />
         </div>
 
         <div className="mb-2 p-1 d-flex border rounded">
-          <div className="mx-2 mt-1"> 
-            <img 
+          <div className="mx-2 mt-1">
+            <img
               className="img-fluid"
               src={passwordIcon}
               alt="iconUser" />
@@ -75,7 +93,7 @@ export function Login(){
             name="password"
             type="password"
             placeholder="Password"
-            onChange={ e => handleChange(e) }
+            onChange={e => handleChange(e)}
           />
         </div>
 
@@ -88,26 +106,26 @@ export function Login(){
                 id="mycheckbox"
               />
               <label className="form-check-label" htmlFor="mycheckbox">
-                Remember
+                Recuerdame
               </label>
             </div>
           </div>
         </div>
         <div className="d-grid gap-2">
-          <button type="submit" className="btn btn-primary">
-            Sign In
+          <button type="submit" className="btn" style={{ backgroundColor: 'var(--green)', color: 'var(--white)' }}>
+            Entrar
           </button>
         </div>
 
         <div className="mt-3 mb-3 text-center">
-          <Link to="/auth/recover">Forgot Password?</Link>
+          <Link to="/auth/recover">¿Has olvidado tu contraseña?</Link>
         </div>
 
         <div className="mt-3 mb-3 text-center">
-           <h6>Don´t have an account</h6>
+          <h6>'¿No tienes una cuenta?'</h6>
           <Link to="/auth/register">Register</Link>
         </div>
       </form>
-     </AuthCard>
-   );
+    </AuthCard>
+  );
 }

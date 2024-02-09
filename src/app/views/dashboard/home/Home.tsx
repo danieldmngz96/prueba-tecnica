@@ -1,7 +1,7 @@
 export function Home(){
    return (
       <div>
-         Home
+         Funciona el home
       </div>
    );
 }
