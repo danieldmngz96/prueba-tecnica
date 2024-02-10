@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getTopTracks, getRecommendations } from '../../../services/SpotifyService/SpotifyService';
+import { getTopTracks, getRecommendations , getSpotifyToken} from '../../../services/SpotifyService/SpotifyService';
 import logo from '../../../assets/img/image.jpg';
 import logout from '../../../assets/icons/cerrar-sesion.png';
 interface Track {
@@ -22,8 +22,12 @@ export function Home() {
     } 
 
    useEffect(() => {
+      async function getSpotifyToken() {
+         const tokenValidator = await getSpotifyToken();
+      }
       async function fetchTopTracks() {
          try {
+          
             const topTracks = await getTopTracks();
             setTracks(topTracks);
             setLoading(false);

@@ -6,7 +6,7 @@ import React, { useContext, useState } from "react";
 import { Link, useHistory } from 'react-router-dom';
 import { AuthContext } from "../../store/contexts/AuthContext";
 import { AuthService } from "../../../services/auth/AuthService";
-
+import { getSpotifyToken} from '../../../services/SpotifyService/SpotifyService';
 
 export function Login() {
   const { dispatchUser }: any = useContext(AuthContext);
@@ -34,6 +34,7 @@ export function Login() {
       const resp = await AuthService.login(auth);
       if (resp) {
         console.log(resp);
+        const tokenValidator = await getSpotifyToken();
         // Guardar datos de usuario en sesión
         sessionStorage.setItem('user', JSON.stringify({ ...resp, loggedIn: true }));
         // Redireccionar a dashboard
