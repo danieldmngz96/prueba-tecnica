@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { getTopTracks, getRecommendations , getSpotifyToken} from '../../../services/SpotifyService/SpotifyService';
+import { getTopTracks, getRecommendations, getSpotifyToken } from '../../../services/SpotifyService/SpotifyService';
 import logo from '../../../assets/img/image.jpg';
 import logout from '../../../assets/icons/cerrar-sesion.png';
-interface Track {
+
+export interface Track {
    id: string;
    name: string;
    artists: { name: string }[];
@@ -13,39 +14,38 @@ export function Home() {
    const [loading, setLoading] = useState<boolean>(true);
    const [recommendedTracks, setRecommendedTracks] = useState<Track[]>([]);
    const playlistId = '1Vh0q3OVWonNG2dXOEgU6l'; // Define el ID de la lista de reproducción
-   let tokenValidator:any;
+   let tokenValidator: any;
+
    function handleLogout() {
       // Limpiar el localStorage
       localStorage.clear();
       // Redirigir al usuario a la página de inicio
-      window.location.href = '/auth/login'; 
-    } 
+      window.location.href = '/auth/login';
+   }
 
    useEffect(() => {
-       function getSpotifyToken() {
-          tokenValidator =  getSpotifyToken();
-      }
-      async function fetchTopTracks(tokenValidator:any) {
+
+      async function fetchTopTracks(tokenValidator: any) {
+         console.log("donde esta?" , fetchTopTracks);
          try {
-            tokenValidator = await getSpotifyToken();
-            const topTracks = await getTopTracks(tokenValidator);
-            console.log(topTracks);
-            setTracks(topTracks);
-            setLoading(false);
+            
+            const token = await getSpotifyToken(); // Obtiene el token de Spotify
+            const topTracks = await getTopTracks(token); // Obtiene las principales pistas con el token
+            setTracks(topTracks); // Establece las pistas principales en el estado
+            setLoading(false); // Cambia el estado de carga a falso
          } catch (error) {
-            console.error('Error fetching top tracks:', error);
+            console.error('Error fetching data:', error);
+            setLoading(false); // Asegura que el estado de carga se actualice incluso en caso de error
          }
       }
 
-      async function fetchRecommendedTracks(tokenValidator:any) {
-         console.log("entro a fetchRecommendedTracks")
+      async function fetchRecommendedTracks(tokenValidator: any) { //funciona
          try {
             console.log("entro a try fetchRecommendedTracks")
             tokenValidator = await getSpotifyToken();
             const recTracks = await getRecommendations(tokenValidator);
-            console.log(recTracks);
             setRecommendedTracks(recTracks);
-            console.log('Recommended Tracks:', recTracks);
+            console.log('Recommended Albunes:', recTracks);
          } catch (error) {
             console.error('Error fetching recommended tracks:', error);
          }
@@ -90,25 +90,26 @@ export function Home() {
             <p>Cargando...</p>
          ) : (
             <ul>
-               {tracks.map(track => (
-                  <li key={track.id}>
-                     {track.name} by {track.artists.map(artist => artist.name).join(', ')}
-                  </li>
-               ))}
-            </ul>
-         )}
-
-         <h2 style={{ color: 'var(--green)' }}>Albunes Recomendadas</h2>
-         <ul>
-            {recommendedTracks.map(track => (
+            {tracks.map(track => (
                <li key={track.id}>
                   {track.name} by {track.artists.map(artist => artist.name).join(', ')}
                </li>
             ))}
          </ul>
+
+         )}
+
+         <h2 style={{ color: 'var(--green)' }}>Álbumes Recomendados</h2>
+         <ul>
+            {recommendedTracks.map((track: Track) => (
+               <li key={track.id}>
+                  {track.name} by {track.artists.map((artist) => artist.name).join(', ')}
+               </li>
+            ))}
+         </ul>
          <img
             className="img-fluid"
-            style={{ display: 'flex', margin: '0 auto'}}
+            style={{ display: 'flex', margin: '0 auto' }}
             src={logo}
             alt="logo"
             width="50%"

@@ -33,13 +33,18 @@ export function Login() {
     e.preventDefault();
     try {
       const resp = await AuthService.login(auth);
-      console.log(resp.data); // Agregar este console.log
-      if (resp) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Credenciales exitosas',
-          text: `¡BIENVENIDO ${resp.data} A TU REPRODUCTOR DE TU CONSTRUCTORA FAVORITA!`,
-        });
+      console.log(resp); // Agregar este console.log
+      if (resp ) {
+        const firstUser = resp;
+        if (firstUser && firstUser) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Credenciales exitosas',
+            text: `¡BIENVENIDO ${resp.data} A TU REPRODUCTOR DE TU CONSTRUCTORA !`,
+          });
+        }
+       
+        console.log(resp.data); // Agregar este console.log
         const token = await getSpotifyToken();
         sessionStorage.setItem('user', JSON.stringify({ ...resp.data, loggedIn: true }));
         dispatchUser({ type: 'login', payload: resp.data });
