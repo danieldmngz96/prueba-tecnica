@@ -46,9 +46,8 @@ async function fetchWebApi2(endpoint: string, method: string, token?: any) {
 
 export async function getTopTracks( token?: any) {
   try {
-   console.log(Response)
     return (await fetchWebApi(
-      'v1/me/top/tracks?time_range=long_term&limit=500', 'GET', token
+      'v1/me/tracks', 'GET', token
     )).items;
     
   } catch (error) {

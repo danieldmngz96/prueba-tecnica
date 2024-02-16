@@ -28,11 +28,12 @@ export function Home() {
       async function fetchTopTracks(tokenValidator: any) {
          console.log("donde esta?" , fetchTopTracks);
          try {
-            
             const token = await getSpotifyToken(); // Obtiene el token de Spotify
+            console.log("linea 33 ",token)
             const topTracks = await getTopTracks(token); // Obtiene las principales pistas con el token
             setTracks(topTracks); // Establece las pistas principales en el estado
             setLoading(false); // Cambia el estado de carga a falso
+          
          } catch (error) {
             console.error('Error fetching data:', error);
             setLoading(false); // Asegura que el estado de carga se actualice incluso en caso de error

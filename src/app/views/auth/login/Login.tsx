@@ -32,19 +32,20 @@ export function Login() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const resp = await AuthService.login(auth);
-      console.log(resp); // Agregar este console.log
+      const resp:any = await AuthService.login(auth);
+      console.log(resp); 
       if (resp ) {
         const firstUser = resp;
+        console.log(firstUser)
         if (firstUser && firstUser) {
           Swal.fire({
             icon: 'success',
             title: 'Credenciales exitosas',
-            text: `¡BIENVENIDO ${resp.data} A TU REPRODUCTOR DE TU CONSTRUCTORA !`,
+            text: `¡BIENVENIDO  ${resp['user']['nombres']} A TU REPRODUCTOR DE TU CONSTRUCTORA !`,
           });
         }
        
-        console.log(resp.data); // Agregar este console.log
+        console.log(resp);
         const token = await getSpotifyToken();
         sessionStorage.setItem('user', JSON.stringify({ ...resp.data, loggedIn: true }));
         dispatchUser({ type: 'login', payload: resp.data });
