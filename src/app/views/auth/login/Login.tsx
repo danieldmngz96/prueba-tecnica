@@ -7,7 +7,21 @@ import { Link, useHistory } from 'react-router-dom';
 import { AuthContext } from "../../store/contexts/AuthContext";
 import { AuthService } from "../../../services/auth/AuthService";
 import { getSpotifyToken } from '../../../services/SpotifyService/SpotifyService';
-import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Importar iconos de ojo abierto y cerrado
+import { FaEye, FaEyeSlash, FaSpotify } from 'react-icons/fa'; // Importar iconos de ojo abierto y cerrado
+import Swal from "sweetalert2";
+import axios from "axios";
+
+interface GlobalType {
+  client_id: string;
+  redirect_uri: string;
+  scopes: string;
+}
+
+const Global: GlobalType = {
+  client_id: 'tu_client_id',
+  redirect_uri: 'tu_redirect_uri',
+  scopes: 'tus_scopes'
+};
 
 export function Login() {
   const { dispatchUser }: any = useContext(AuthContext);
@@ -19,13 +33,24 @@ export function Login() {
     e.preventDefault();
     try {
       const resp = await AuthService.login(auth);
-      if (resp.success) {
+      console.log(resp.data); // Agregar este console.log
+      if (resp) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Credenciales exitosas',
+          text: `¡BIENVENIDO ${resp.data} A TU REPRODUCTOR DE TU CONSTRUCTORA FAVORITA!`,
+        });
         const token = await getSpotifyToken();
         sessionStorage.setItem('user', JSON.stringify({ ...resp.data, loggedIn: true }));
         dispatchUser({ type: 'login', payload: resp.data });
         history.push('/dashboard/home');
       } else {
-        alert('Credenciales inválidas');
+        Swal.fire({
+          icon: 'error',
+          title: 'Credenciales inválidas',
+          text: 'Por favor, verifica tus credenciales e intenta nuevamente.',
+        });
+        console.log(resp)
       }
     } catch (error) {
       console.error('Error en inicio de sesión:', error);
@@ -37,6 +62,12 @@ export function Login() {
       ...auth,
       [e.target.name]: e.target.value
     });
+  };
+
+  const spoty_url = `https://accounts.spotify.com/authorize?client_id=${Global.client_id}&response_type=code&redirect_uri=${Global.redirect_uri}&scope=${Global.scopes}`;
+
+  const handleSpotifyLogin = () => {
+    window.location.replace(spoty_url);
   };
 
   return (
@@ -96,6 +127,13 @@ export function Login() {
         <div className="mt-3 mb-3 text-center">
           <h6>¿No tienes una cuenta?</h6>
           <Link to="/auth/register">Register</Link>
+        </div>
+
+        {/* Botón para iniciar sesión con Spotify */}
+        <div className="d-flex justify-content-center align-items-center">
+          <button onClick={handleSpotifyLogin} className="btn btn-success">
+            <FaSpotify className="me-2" /> Iniciar sesión con Spotify
+          </button>
         </div>
       </form>
     </AuthCard>

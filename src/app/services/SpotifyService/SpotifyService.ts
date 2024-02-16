@@ -1,8 +1,8 @@
-const token = 'BQDanK1nQG8pEIrCcwz4crMNFeHgtTSwIPapfY1YrtB9kHqtcsKOAzBsPtdnublBeaER7-h_WQ2qNyWlO8kEk3O7KEfzN4zKS-UEiQoUEzTC43zuujHY1TtHzcHLoDTvXAs-Nr_YCBUQW26wr6-DCFHccjglmt08rUT6SfmZZdDI_Ip7q97zdMTd6M59BQK81uHSqUN1D6RQSGymlAt_QKrG97PRlzhpNstIkR1ZL5UfbojbgCgyj6duSoRZG6HyWw'; //token toca cambiarlo cada 15 minutos o se rompe la app
+const token:any = ''; //token toca cambiarlo cada 15 minutos o se rompe la app
 const SPOTIFY_CLIENT_ID = 'bace9819bb5c41b0aed31ae8411ac556';
 const SPOTIFY_CLIENT_SECRET = 'dd4390dc12b2486cb58f49bba6c0a27a';
 
-async function fetchWebApi(endpoint: string, method: string, body?: any) {
+async function fetchWebApi(endpoint: string, method: string, body?: any, token?: any) {
   const res = await fetch(`https://api.spotify.com/${endpoint}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -13,9 +13,9 @@ async function fetchWebApi(endpoint: string, method: string, body?: any) {
   return await res.json();
 }
 
-export async function getTopTracks() {
+export async function getTopTracks( token?: any) {
   try {
-    const tokenValidator = await getSpotifyToken();
+ 
     return (await fetchWebApi(
       'v1/me/top/tracks?time_range=long_term&limit=50', 'GET',
     )).items;
@@ -25,7 +25,7 @@ export async function getTopTracks() {
   }
 }
 
-export async function getRecommendations() {
+export async function getRecommendations( token?: any) {
   try {
     const topTracksIds = [
       '5zaIVQv1oPnTa86BUmmbjz', '6vYQaurynY7NoHd6Iw85QM', '79fkYjEJlscHdgAtYWYfUO', '3qXZqXGniqNt3PK2CBSZgF', 
@@ -41,7 +41,7 @@ export async function getRecommendations() {
   }  
 }
 
-export async function getSpotifyToken() {
+export async function getSpotifyToken( ) {
     const tokenDataString = localStorage.getItem('spotifyToken');
     const tokenData =  tokenDataString ? JSON.parse(tokenDataString) : null;
     console.log(tokenData);
@@ -64,17 +64,20 @@ export async function getSpotifyToken() {
         const expirationDate = new Date(Date.now() + expiresInMilliseconds);
   
         // Guardar el nuevo token y la fecha de vencimiento en el localStorage
+        //token = data.access_token;
         localStorage.setItem('spotifyToken', JSON.stringify({
           token: data.access_token,
           expiresAt: expirationDate.toISOString() // Convertir a formato ISO
         }));
-  
+        console.log(data.access_token)
         return data.access_token; // Devolver el nuevo token
+        
       })
       .catch(error => {
         console.error('Error al obtener el token de Spotify:', error);
         throw error;
       });
     }
+    
   }
 

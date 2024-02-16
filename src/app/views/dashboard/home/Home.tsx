@@ -13,7 +13,7 @@ export function Home() {
    const [loading, setLoading] = useState<boolean>(true);
    const [recommendedTracks, setRecommendedTracks] = useState<Track[]>([]);
    const playlistId = '1Vh0q3OVWonNG2dXOEgU6l'; // Define el ID de la lista de reproducción
-
+   let tokenValidator:any;
    function handleLogout() {
       // Limpiar el localStorage
       localStorage.clear();
@@ -22,13 +22,14 @@ export function Home() {
     } 
 
    useEffect(() => {
-      async function getSpotifyToken() {
-         const tokenValidator = await getSpotifyToken();
+       function getSpotifyToken() {
+          tokenValidator =  getSpotifyToken();
       }
-      async function fetchTopTracks() {
+      async function fetchTopTracks(tokenValidator:any) {
          try {
-          
-            const topTracks = await getTopTracks();
+            tokenValidator = await getSpotifyToken();
+            const topTracks = await getTopTracks(tokenValidator);
+            console.log(topTracks);
             setTracks(topTracks);
             setLoading(false);
          } catch (error) {
@@ -36,9 +37,13 @@ export function Home() {
          }
       }
 
-      async function fetchRecommendedTracks() {
+      async function fetchRecommendedTracks(tokenValidator:any) {
+         console.log("entro a fetchRecommendedTracks")
          try {
-            const recTracks = await getRecommendations();
+            console.log("entro a try fetchRecommendedTracks")
+            tokenValidator = await getSpotifyToken();
+            const recTracks = await getRecommendations(tokenValidator);
+            console.log(recTracks);
             setRecommendedTracks(recTracks);
             console.log('Recommended Tracks:', recTracks);
          } catch (error) {
@@ -46,8 +51,8 @@ export function Home() {
          }
       }
 
-      fetchTopTracks();
-      fetchRecommendedTracks();
+      fetchTopTracks(tokenValidator);
+      fetchRecommendedTracks(tokenValidator);
    }, []);
 
    return (
